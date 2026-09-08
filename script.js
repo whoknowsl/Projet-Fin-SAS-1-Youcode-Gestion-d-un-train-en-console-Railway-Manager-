@@ -181,7 +181,9 @@ const trips = [
         availableSeats: 50
     }
 ];
-const tickets = [];
+const tickets = [{
+    id: 1, nomDePassage: "ahmed", tripId: 3, seatNumber: 1, price: 90
+}];
 function menuPrincipla() {
     console.log(`================================= 
 RAILWAY MANAGER 
@@ -196,18 +198,17 @@ RAILWAY MANAGER
 0. Quitter 
 Votre choix :`)
 }
-function afficherLesTrajets(array) {
+function afficherLesTrajets() {
     console.log("=== TRAJETS DISPONIBLES === ")
-    array.forEach(trajet => {
-        console.log(`#${trajet.id} ${trajet.departure} → ${trajet.destination} 
-Départ : ${trajet.departureTime} 
-Arrivée : ${trajet.arrivalTime} 
-Prix : ${trajet.price} DH 
-Places disponibles : ${trajet.availableSeats}
+    trips.forEach(trip => {
+        console.log(`#${trip.id} ${trip.departure} → ${trip.destination} 
+Départ : ${trip.departureTime} 
+Arrivée : ${trip.arrivalTime} 
+Prix : ${trip.price} DH 
+Places disponibles : ${trip.availableSeats}
 `);
     });
 }
-
 function acheteUnTicket() {
     const ticket = {
         id: tickets.length > 0 ? tickets[tickets.length - 1].id + 1 : 1
@@ -242,7 +243,7 @@ Prix : ${ticket.price} DH`)
 }
 acheteUnTicket()
 acheteUnTicket()
-function afficherLesTicket(tickets) {
+function afficherLesTicket() {
     console.log("=== TICKETS ===")
     tickets.forEach(ticket => {
         console.log(`Ticket #${ticket.id} 
@@ -253,10 +254,31 @@ Prix : ${ticket.price} DH
 `)
     })
 }
-function annulerUnTicket(tickets) {
+function annulerUnTicket() {
     const ticketId = Number(prompt("Identifiant du ticket : "));
-    const indexTicket = tickets.findIndex(ticke => ticke.id === ticketId);
-    console.log(indexTicket)
-}
+    const ticketAnnule = tickets.find(ticket => ticket.id === ticketId);
+    if (ticketAnnule) {
+        const indexTicket = tickets.findIndex(ticket => ticket.id === ticketId);
+        const trajetDeTicketAnnule = trips.find(trip => trip.id === ticketAnnule.tripId)
+        trajetDeTicketAnnule.availableSeats += 1;
+        tickets.splice(indexTicket, 1);
+        console.log("Ticket annulé avec succès. ")
+    } else {
+        console.log("Ticket introuvable. ")
+    }
 
-annulerUnTicket(tickets);
+}
+function rechercherUnTicket() {
+    const nomRecherche = prompt("Nom du passager : ").toLocaleLowerCase();
+    const filtredTickets = tickets.filter(ticket => {
+        return ticket.nomDePassage === nomRecherche
+    })
+    filtredTickets.forEach(ticket => {
+        console.log(`Ticket #${ticket.id} 
+Passager : ${ticket.nomDePassage} 
+Trajet : ${ticket.departure} → ${ticket.destination} 
+Place : ${ticket.seatNumber} 
+Prix : ${ticket.price} DH`)
+    })
+}
+rechercherUnTicket()
