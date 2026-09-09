@@ -241,9 +241,6 @@ Place : ${ticket.seatNumber}
 Prix : ${ticket.price} DH`)
 
 }
-acheteUnTicket()
-acheteUnTicket()
-acheteUnTicket()
 function afficherLesTicket() {
     console.log("=== TICKETS ===")
     tickets.forEach(ticket => {
