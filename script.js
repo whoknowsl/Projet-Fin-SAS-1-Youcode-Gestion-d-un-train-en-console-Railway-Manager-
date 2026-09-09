@@ -243,6 +243,7 @@ Prix : ${ticket.price} DH`)
 }
 acheteUnTicket()
 acheteUnTicket()
+acheteUnTicket()
 function afficherLesTicket() {
     console.log("=== TICKETS ===")
     tickets.forEach(ticket => {
@@ -270,15 +271,79 @@ function annulerUnTicket() {
 }
 function rechercherUnTicket() {
     const nomRecherche = prompt("Nom du passager : ").toLocaleLowerCase();
+    console.log(`// Le programme affiche tous les tickets appartenant à ${nomRecherche}.`)
     const filtredTickets = tickets.filter(ticket => {
-        return ticket.nomDePassage === nomRecherche
+        return ticket.passengerName === nomRecherche
     })
     filtredTickets.forEach(ticket => {
         console.log(`Ticket #${ticket.id} 
-Passager : ${ticket.nomDePassage} 
+Passager : ${ticket.passengerName}
 Trajet : ${ticket.departure} → ${ticket.destination} 
 Place : ${ticket.seatNumber} 
 Prix : ${ticket.price} DH`)
     })
 }
-rechercherUnTicket()
+function filterLesTrajects() {
+    const villeDeDepart = prompt("Ville de départ : ").toLocaleLowerCase();
+    const filterdArrByDepart = trips.filter(trip => {
+        return trip.departure.toLocaleLowerCase() === villeDeDepart
+    })
+    filterdArrByDepart.forEach(trip => {
+        console.log(`${trip.departure} → ${trip.destination} : ${trip.price} DH`)
+    })
+
+}
+function trierLesTrajets() {
+    let swap;
+    for (let i = 1; i < trips.length; i++) {
+        swap = false;
+        for (let j = 0; j < trips.length - i; j++) {
+            if (trips[j].price > trips[j + 1].price) {
+                [trips[j], trips[j + 1]] = [trips[j + 1], trips[j]]
+                swap = true
+            }
+        }
+        if (!swap) {
+            break;
+        }
+
+
+    }
+    trips.forEach(trip => {
+        console.log(`${trip.departure} → ${trip.destination} : ${trip.price} DH`);
+    })
+
+}
+function NombreTotalDeTicketsVendus() {
+    console.log(`Nombre total de tickets vendus 
+Nombre total de tickets : ${tickets.length} `)
+}
+function laSommeDesPrixDesTickets() {
+    let total = 0;
+    tickets.forEach(ticket => {
+        total += ticket.price;
+    })
+    console.log(`Chiffre d'affaires total 
+Calculer la somme des prix des tickets. 
+Chiffre d'affaires total : ${total} DH`)
+}
+function laSommeDeTrajetLePlusVendu() {
+    let highestCount = 0;
+    let map = {};
+    tickets.forEach(ticket => {
+        if (ticket.tripId in map) {
+            map[ticket.tripId] += 1
+        } else {
+            map[ticket.tripId] = 1
+        }
+    });
+
+    for (const tripId in map) {
+        if (map[tripId] > highestCount) {
+            highestCount = Number(map[tripId]);
+        }
+    }
+    const trip = trips.find(trip => trip.id === highestCount);
+    console.log(trip.departure)
+
+}
