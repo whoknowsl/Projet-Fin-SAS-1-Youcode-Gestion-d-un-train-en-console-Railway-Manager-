@@ -1,4 +1,4 @@
-const trips = [
+export const trips = [
     {
         id: 1,
         departure: "Safi",
@@ -180,3 +180,4 @@ const trips = [
         availableSeats: 50
     }
 ];
+export const tickets = [];

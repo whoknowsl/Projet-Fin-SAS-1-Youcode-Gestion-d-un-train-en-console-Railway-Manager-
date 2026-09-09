@@ -1,0 +1,174 @@
+import { trips, tickets } from "./data.js";
+import createPrompt from "prompt-sync"; // Fixed to use ES Module import
+const prompt = createPrompt();
+function menuPrincipla() {
+
+    console.log(`
+                               o o o o o o o . . .   ______________________________ _____=======_||____
+                              o      _____           ||                            | |                 |
+                            .][__n_n_|DD[  ====_____  |                            | |                 |
+                           >(________|__|_[_________]_|____________________________|_|_________________|
+                           _/oo OOOOO oo/    ooo    ooo  'o!o!o                  o!o!o  'o!o         o!o
+                            -+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+                                                  
+                                                     ================================= 
+                                                              RAILWAY MANAGER 
+                                                     ================================= 
+                                                        1. Afficher les trajets 
+                                                        2. Acheter un ticket 
+                                                        3. Afficher les tickets 
+                                                        4. Annuler un ticket 
+                                                        5. Rechercher un ticket 
+                                                        6. Filtrer les trajets 
+                                                        7. Trier les trajets 
+                                                        0. Quitter
+    `)
+}
+function afficherLesTrajets() {
+    console.log("=== TRAJETS DISPONIBLES === ")
+    trips.forEach(trip => {
+        console.log(`#${trip.id} ${trip.departure} → ${trip.destination} 
+Départ : ${trip.departureTime} 
+Arrivée : ${trip.arrivalTime} 
+Prix : ${trip.price} DH 
+Places disponibles : ${trip.availableSeats}
+`);
+    });
+}
+function acheteUnTicket() {
+    const ticket = {
+        id: tickets.length > 0 ? tickets[tickets.length - 1].id + 1 : 1
+    }
+    const nomDePassage = prompt("Nom du passager : ");
+    const IdentifiDuTrajet = Number(prompt("Identifiant du trajet :"));
+    const voyagesDisponible = trips.find(trip => trip.id === IdentifiDuTrajet
+    )
+    if (!isNaN(IdentifiDuTrajet)) {
+        if (voyagesDisponible.availableSeats > 0) {
+            voyagesDisponible.availableSeats -= 1;
+            ticket.passengerName = nomDePassage;
+            ticket.tripId = IdentifiDuTrajet;
+            ticket.seatNumber = 50 - voyagesDisponible.availableSeats
+            ticket.price = voyagesDisponible.price
+            ticket.departure = voyagesDisponible.departure
+            ticket.destination = voyagesDisponible.destination
+            tickets.push(ticket);
+        } else if (voyagesDisponible.availableSeats === 0) {
+            console.log("Train complet.")
+        } else {
+            console.log("Trajet introuvable.")
+        }
+        console.log(`Ticket acheté avec succès.                                                                                                       
+Ticket #${ticket.id} 
+Passager : ${ticket.passengerName} 
+Trajet : ${ticket.departure} → ${ticket.destination} 
+Place : ${ticket.seatNumber} 
+Prix : ${ticket.price} DH`)
+    } else {
+        console.log("Enter a valid number!")
+    }
+}
+function afficherLesTicket() {
+    console.log("=== TICKETS ===")
+    tickets.forEach(ticket => {
+        console.log(`Ticket #${ticket.id} 
+Passager : ${ticket.passengerName} 
+Trajet : ${ticket.departure} → ${ticket.destination} 
+Place : ${ticket.seatNumber} 
+Prix : ${ticket.price} DH 
+`)
+    })
+}
+function annulerUnTicket() {
+    const ticketId = Number(prompt("Identifiant du ticket : "));
+    const ticketAnnule = tickets.find(ticket => ticket.id === ticketId);
+    if (ticketAnnule) {
+        const indexTicket = tickets.findIndex(ticket => ticket.id === ticketId);
+        const trajetDeTicketAnnule = trips.find(trip => trip.id === ticketAnnule.tripId)
+        trajetDeTicketAnnule.availableSeats += 1;
+        tickets.splice(indexTicket, 1);
+        console.log("Ticket annulé avec succès. ")
+    } else {
+        console.log("Ticket introuvable. ")
+    }
+
+}
+function rechercherUnTicket() {
+    const nomRecherche = prompt("Nom du passager : ").toLocaleLowerCase();
+    console.log(`// Le programme affiche tous les tickets appartenant à ${nomRecherche}.`)
+    const filtredTickets = tickets.filter(ticket => {
+        return ticket.passengerName === nomRecherche
+    })
+    filtredTickets.forEach(ticket => {
+        console.log(`Ticket #${ticket.id} 
+Passager : ${ticket.passengerName}
+Trajet : ${ticket.departure} → ${ticket.destination} 
+Place : ${ticket.seatNumber} 
+Prix : ${ticket.price} DH`)
+    })
+}
+function filterLesTrajects() {
+    const villeDeDepart = prompt("Ville de départ : ").toLocaleLowerCase();
+    const filterdArrByDepart = trips.filter(trip => {
+        return trip.departure.toLocaleLowerCase() === villeDeDepart
+    })
+    filterdArrByDepart.forEach(trip => {
+        console.log(`${trip.departure} → ${trip.destination} : ${trip.price} DH`)
+    })
+
+}
+function trierLesTrajets() {
+    let swap;
+    for (let i = 1; i < trips.length; i++) {
+        swap = false;
+        for (let j = 0; j < trips.length - i; j++) {
+            if (trips[j].price > trips[j + 1].price) {
+                [trips[j], trips[j + 1]] = [trips[j + 1], trips[j]]
+                swap = true
+            }
+        }
+        if (!swap) {
+            break;
+        }
+
+
+    }
+    trips.forEach(trip => {
+        console.log(`${trip.departure} → ${trip.destination} : ${trip.price} DH`);
+    })
+
+}
+function NombreTotalDeTicketsVendus() {
+    console.log(`Nombre total de tickets vendus 
+Nombre total de tickets : ${tickets.length} `)
+}
+function laSommeDesPrixDesTickets() {
+    let total = 0;
+    tickets.forEach(ticket => {
+        total += ticket.price;
+    })
+    console.log(`Chiffre d'affaires total 
+Calculer la somme des prix des tickets. 
+Chiffre d'affaires total : ${total} DH`)
+}
+function laSommeDeTrajetLePlusVendu() {
+    let highestCount = 0;
+    let map = {};
+    tickets.forEach(ticket => {
+        if (ticket.tripId in map) {
+            map[ticket.tripId] += 1
+        } else {
+            map[ticket.tripId] = 1
+        }
+    });
+
+    for (const tripId in map) {
+        if (map[tripId] > highestCount) {
+            highestCount = Number(map[tripId]);
+        }
+    }
+    const trip = trips.find(trip => trip.id === highestCount);
+    console.log(trip.departure)
+
+}
+export { menuPrincipla, afficherLesTicket, acheteUnTicket, annulerUnTicket, rechercherUnTicket, filterLesTrajects, trierLesTrajets, NombreTotalDeTicketsVendus, laSommeDeTrajetLePlusVendu, laSommeDesPrixDesTickets, afficherLesTrajets }
