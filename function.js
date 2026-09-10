@@ -1,6 +1,7 @@
 import { trips, tickets } from "./data.js";
-import createPrompt from "prompt-sync"; // Fixed to use ES Module import
+import createPrompt from "prompt-sync";
 const prompt = createPrompt();
+
 function menuPrincipla() {
 
     console.log(`
@@ -10,7 +11,7 @@ function menuPrincipla() {
                            >(________|__|_[_________]_|____________________________|_|_________________|
                            _/oo OOOOO oo/    ooo    ooo  'o!o!o                  o!o!o  'o!o         o!o
                             -+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
-                                                  
+
                                                      ================================= 
                                                               RAILWAY MANAGER 
                                                      ================================= 
@@ -20,12 +21,13 @@ function menuPrincipla() {
                                                         4. Annuler un ticket 
                                                         5. Rechercher un ticket 
                                                         6. Filtrer les trajets 
-                                                        7. Trier les trajets 
+                                                        7. Trier les trajets
+                                                        8.  
                                                         0. Quitter
     `)
 }
 function afficherLesTrajets() {
-    console.log("=== TRAJETS DISPONIBLES === ")
+    console.log(`=== TRAJETS DISPONIBLES ===`)
     trips.forEach(trip => {
         console.log(`#${trip.id} ${trip.departure} → ${trip.destination} 
 Départ : ${trip.departureTime} 
@@ -37,7 +39,7 @@ Places disponibles : ${trip.availableSeats}
 }
 function acheteUnTicket() {
     const ticket = {
-        id: tickets.length > 0 ? tickets[tickets.length - 1].id + 1 : 1
+        id: tickets.length + 1
     }
     const nomDePassage = prompt("Nom du passager : ");
     const IdentifiDuTrajet = Number(prompt("Identifiant du trajet :"));
@@ -50,34 +52,40 @@ function acheteUnTicket() {
             ticket.tripId = IdentifiDuTrajet;
             ticket.seatNumber = 50 - voyagesDisponible.availableSeats
             ticket.price = voyagesDisponible.price
-            ticket.departure = voyagesDisponible.departure
-            ticket.destination = voyagesDisponible.destination
             tickets.push(ticket);
         } else if (voyagesDisponible.availableSeats === 0) {
-            console.log("Train complet.")
+            console.log(`                               Train complet.      `)
         } else {
-            console.log("Trajet introuvable.")
+            console.log(`                               Trajet introuvable.       `)
         }
-        console.log(`Ticket acheté avec succès.                                                                                                       
-Ticket #${ticket.id} 
-Passager : ${ticket.passengerName} 
-Trajet : ${ticket.departure} → ${ticket.destination} 
-Place : ${ticket.seatNumber} 
-Prix : ${ticket.price} DH`)
+        console.log(`                           Ticket acheté avec succès.      
+                                                        Ticket #${ticket.id} 
+                                                        Passager : ${ticket.passengerName} 
+                                                        Trajet : ${voyagesDisponible.departure} → ${voyagesDisponible.destination} 
+                                                        Place : ${ticket.seatNumber} 
+                                                        Prix : ${ticket.price} DH`)
     } else {
-        console.log("Enter a valid number!")
+        console.log(`                           Enter a valid number!                          `)
     }
 }
 function afficherLesTicket() {
-    console.log("=== TICKETS ===")
-    tickets.forEach(ticket => {
-        console.log(`Ticket #${ticket.id} 
+
+    if (tickets.length === 0) {
+        console.log(`Aucun ticket enregistré.`)
+    } else {
+        console.log("=== TICKETS ===")
+        tickets.forEach(ticket => {
+            const voyagesDisponible = trips.find(trip => trip.id === ticket.tripId
+            )
+            console.log(`Ticket #${ticket.id} 
 Passager : ${ticket.passengerName} 
-Trajet : ${ticket.departure} → ${ticket.destination} 
+Trajet : ${voyagesDisponible.departure} → ${voyagesDisponible.destination} 
 Place : ${ticket.seatNumber} 
 Prix : ${ticket.price} DH 
 `)
-    })
+        })
+    }
+
 }
 function annulerUnTicket() {
     const ticketId = Number(prompt("Identifiant du ticket : "));
@@ -99,13 +107,18 @@ function rechercherUnTicket() {
     const filtredTickets = tickets.filter(ticket => {
         return ticket.passengerName === nomRecherche
     })
-    filtredTickets.forEach(ticket => {
-        console.log(`Ticket #${ticket.id} 
+    if (filtredTickets.length !== 0) {
+        filtredTickets.forEach(ticket => {
+            console.log(`Ticket #${ticket.id} 
 Passager : ${ticket.passengerName}
 Trajet : ${ticket.departure} → ${ticket.destination} 
 Place : ${ticket.seatNumber} 
 Prix : ${ticket.price} DH`)
-    })
+        })
+    } else {
+        console.log(`                            \"Le nom que vous avez saisi ne correspond à aucun billet.\" `)
+    }
+
 }
 function filterLesTrajects() {
     const villeDeDepart = prompt("Ville de départ : ").toLocaleLowerCase();
@@ -138,7 +151,7 @@ function trierLesTrajets() {
     })
 
 }
-function NombreTotalDeTicketsVendus() {
+function nombreTotalDeTicketsVendus() {
     console.log(`Nombre total de tickets vendus 
 Nombre total de tickets : ${tickets.length} `)
 }
@@ -168,7 +181,16 @@ function laSommeDeTrajetLePlusVendu() {
         }
     }
     const trip = trips.find(trip => trip.id === highestCount);
-    console.log(trip.departure)
+    console.log(`Trajet le plus vendu : 
+        
+${trip.departure} → ${trip.destination} 
+${highestCount} tickets vendus `)
 
 }
-export { menuPrincipla, afficherLesTicket, acheteUnTicket, annulerUnTicket, rechercherUnTicket, filterLesTrajects, trierLesTrajets, NombreTotalDeTicketsVendus, laSommeDeTrajetLePlusVendu, laSommeDesPrixDesTickets, afficherLesTrajets }
+function statistiques() {
+    nombreTotalDeTicketsVendus();
+    laSommeDeTrajetLePlusVendu();
+    laSommeDeTrajetLePlusVendu();
+
+}
+export { menuPrincipla, afficherLesTicket, acheteUnTicket, annulerUnTicket, rechercherUnTicket, filterLesTrajects, trierLesTrajets, nombreTotalDeTicketsVendus, laSommeDeTrajetLePlusVendu, laSommeDesPrixDesTickets, afficherLesTrajets, statistiques }
