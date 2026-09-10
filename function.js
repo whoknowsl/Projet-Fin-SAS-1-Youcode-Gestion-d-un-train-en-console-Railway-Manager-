@@ -39,7 +39,7 @@ Places disponibles : ${trip.availableSeats}
 }
 function acheteUnTicket() {
     const ticket = {
-        id: tickets.length + 1
+        id: tickets.lenght > 0 ? tickets[tickets.length - 1].id : 1
     }
     const nomDePassage = prompt("Nom du passager : ");
     const IdentifiDuTrajet = Number(prompt("Identifiant du trajet :"));
