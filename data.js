@@ -180,11 +180,5 @@ export const trips = [
         availableSeats: 50
     }
 ];
-export const tickets = [{
-    id: 1,
-    passengerName: "Ahmed",
-    tripId: 3,
-    seatNumber: 1,
-    price: 90
-}];
-export const annuleTicktesArr = [];
+export const tickets = [{ id: 1, passengerName: "Ahmed", tripId: 3, seatNumber: 1, price: 90 }, { id: 2, passengerName: "Sarah", tripId: 3, seatNumber: 2, price: 90 }, { id: 3, passengerName: "Youssef", tripId: 5, seatNumber: 14, price: 120 }];
+export const annuleTicktesArr = []; 

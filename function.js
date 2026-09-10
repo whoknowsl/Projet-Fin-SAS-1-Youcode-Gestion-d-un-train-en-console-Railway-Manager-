@@ -12,18 +12,18 @@ function menuPrincipla() {
                            _/oo OOOOO oo/    ooo    ooo  'o!o!o                  o!o!o  'o!o         o!o
                             -+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 
-                                                     ================================= 
-                                                              RAILWAY MANAGER 
-                                                     ================================= 
-                                                        1. Afficher les trajets 
-                                                        2. Acheter un ticket 
-                                                        3. Afficher les tickets 
-                                                        4. Annuler un ticket 
-                                                        5. Rechercher un ticket 
-                                                        6. Filtrer les trajets 
-                                                        7. Trier les trajets
-                                                        8. Statistiques 
-                                                        0. Quitter
+================================= 
+         RAILWAY MANAGER 
+================================= 
+   1. Afficher les trajets 
+   2. Acheter un ticket 
+   3. Afficher les tickets 
+   4. Annuler un ticket 
+   5. Rechercher un ticket 
+   6. Filtrer les trajets 
+   7. Trier les trajets
+   8. Statistiques 
+   0. Quitter
     `)
 }
 function afficherLesTrajets() {
@@ -104,7 +104,6 @@ function annulerUnTicket() {
             ticket.id === ticketId
         );
         annuleTicktesArr.push(ticketAnnule);
-        console.log(annuleTicktesArr);             ///mse7ha
         const trajetDeTicketAnnule = trips.find(trip => trip.id === ticketAnnule.tripId);
         trajetDeTicketAnnule.availableSeats += 1;
         tickets.splice(indexTicket, 1);
@@ -156,8 +155,6 @@ function trierLesTrajets() {
         if (!swap) {
             break;
         }
-
-
     }
     trips.forEach(trip => {
         console.log(`${trip.departure} → ${trip.destination} : ${trip.price} DH`);
@@ -166,6 +163,7 @@ function trierLesTrajets() {
 }
 function nombreTotalDeTicketsVendus() {
     console.log(`Nombre total de tickets vendus 
+
 Nombre total de tickets : ${tickets.length} `)
 }
 function laSommeDesPrixDesTickets() {
@@ -174,7 +172,7 @@ function laSommeDesPrixDesTickets() {
         total += ticket.price;
     })
     console.log(`Chiffre d'affaires total 
-Calculer la somme des prix des tickets. 
+
 Chiffre d'affaires total : ${total} DH`)
 }
 function laSommeDeTrajetLePlusVendu() {
@@ -186,6 +184,7 @@ function laSommeDeTrajetLePlusVendu() {
         }
     }
     console.log(`Trajet le plus vendu : 
+
 ${highestDestinsation.departure} → ${highestDestinsation.destination} 
 ${50 - highestDestinsation.availableSeats} tickets vendus`);
 
