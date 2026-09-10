@@ -22,7 +22,7 @@ function menuPrincipla() {
                                                         5. Rechercher un ticket 
                                                         6. Filtrer les trajets 
                                                         7. Trier les trajets
-                                                        8.  
+                                                        8. Statistiques 
                                                         0. Quitter
     `)
 }
