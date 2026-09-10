@@ -38,22 +38,25 @@ Places disponibles : ${trip.availableSeats}
     });
 }
 function acheteUnTicket() {
-    const ticket = {
-        id: tickets.lenght > 0 ? tickets[tickets.length - 1].id : 1
-    }
-    const nomDePassage = prompt("Nom du passager : ");
+    const nomDePassage = prompt("Nom du passager : ").toLocaleLowerCase();
     const IdentifiDuTrajet = Number(prompt("Identifiant du trajet :"));
-    const voyagesDisponible = trips.find(trip => trip.id === IdentifiDuTrajet
-    )
+
+
     if (isNaN(IdentifiDuTrajet)) {
         console.log(`Enter a valid number!`)
-    } else if (!voyagesDisponible) {
+        return;
+    }
+    const voyagesDisponible = trips.find(trip => trip.id === IdentifiDuTrajet
+    )
+    if (!voyagesDisponible) {
         console.log(`Trajet introuvable.`)
     } else if (voyagesDisponible.availableSeats === 0) {
         console.log(`Train complet.`)
     } else {
+        const ticket = {
+            id: tickets.length > 0 ? tickets[tickets.length - 1].id + 1 : 1
+        }
         const indexOfTicketAnnule = annuleTicktesArr.findIndex(tickt => tickt.tripId === IdentifiDuTrajet);
-
         voyagesDisponible.availableSeats -= 1;
         ticket.passengerName = nomDePassage;
         ticket.tripId = IdentifiDuTrajet;
@@ -97,7 +100,6 @@ Prix : ${ticket.price} DH
 }
 function annulerUnTicket() {
     const ticketId = Number(prompt("Identifiant du ticket : "));
-    const ticketAnnule = tickets.find(ticket => ticket.id === ticketId);
     if (ticketAnnule) {
         const indexTicket = tickets.findIndex(ticket => ticket.id === ticketId);
         const ticketAnnule = tickets.find(ticket =>
@@ -163,8 +165,9 @@ function trierLesTrajets() {
 }
 function nombreTotalDeTicketsVendus() {
     console.log(`Nombre total de tickets vendus 
+Nombre total de tickets : ${tickets.length} 
 
-Nombre total de tickets : ${tickets.length} `)
+`)
 }
 function laSommeDesPrixDesTickets() {
     let total = 0;
@@ -172,8 +175,9 @@ function laSommeDesPrixDesTickets() {
         total += ticket.price;
     })
     console.log(`Chiffre d'affaires total 
+Chiffre d'affaires total : ${total} DH
 
-Chiffre d'affaires total : ${total} DH`)
+`)
 }
 function laSommeDeTrajetLePlusVendu() {
     let lowestNumOfSeat = trips[0].availableSeats
@@ -186,7 +190,9 @@ function laSommeDeTrajetLePlusVendu() {
     console.log(`Trajet le plus vendu : 
 
 ${highestDestinsation.departure} → ${highestDestinsation.destination} 
-${50 - highestDestinsation.availableSeats} tickets vendus`);
+${50 - highestDestinsation.availableSeats} tickets vendus
+
+`);
 
 }
 function statistiques() {
