@@ -1,4 +1,4 @@
-import { menuPrincipla, afficherLesTicket, acheteUnTicket, annulerUnTicket, rechercherUnTicket, filterLesTrajects, trierLesTrajets, nombreTotalDeTicketsVendus, laSommeDeTrajetLePlusVendu, laSommeDesPrixDesTickets, afficherLesTrajets, statistiques } from "./function.js"
+import { menuPrincipla, afficherLesTicket, acheteUnTicket, annulerUnTicket, rechercherUnTicket, filterLesTrajects, trierLesTrajets, afficherLesTrajets, statistiques } from "./function.js"
 import createPrompt from "prompt-sync";
 const prompt = createPrompt();
 let runningProgramme = true

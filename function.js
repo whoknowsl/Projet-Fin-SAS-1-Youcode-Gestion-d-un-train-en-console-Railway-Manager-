@@ -1,4 +1,4 @@
-import { trips, tickets } from "./data.js";
+import { trips, tickets, annuleTicktesArr } from "./data.js";
 import createPrompt from "prompt-sync";
 const prompt = createPrompt();
 
@@ -45,27 +45,35 @@ function acheteUnTicket() {
     const IdentifiDuTrajet = Number(prompt("Identifiant du trajet :"));
     const voyagesDisponible = trips.find(trip => trip.id === IdentifiDuTrajet
     )
-    if (!isNaN(IdentifiDuTrajet)) {
-        if (voyagesDisponible.availableSeats > 0) {
-            voyagesDisponible.availableSeats -= 1;
-            ticket.passengerName = nomDePassage;
-            ticket.tripId = IdentifiDuTrajet;
-            ticket.seatNumber = 50 - voyagesDisponible.availableSeats
-            ticket.price = voyagesDisponible.price
-            tickets.push(ticket);
-        } else if (voyagesDisponible.availableSeats === 0) {
-            console.log(`                               Train complet.      `)
-        } else {
-            console.log(`                               Trajet introuvable.       `)
-        }
-        console.log(`                           Ticket acheté avec succès.      
-                                                        Ticket #${ticket.id} 
-                                                        Passager : ${ticket.passengerName} 
-                                                        Trajet : ${voyagesDisponible.departure} → ${voyagesDisponible.destination} 
-                                                        Place : ${ticket.seatNumber} 
-                                                        Prix : ${ticket.price} DH`)
+    if (isNaN(IdentifiDuTrajet)) {
+        console.log(`Enter a valid number!`)
+    } else if (!voyagesDisponible) {
+        console.log(`Trajet introuvable.`)
+    } else if (voyagesDisponible.availableSeats === 0) {
+        console.log(`Train complet.`)
     } else {
-        console.log(`                           Enter a valid number!                          `)
+        const indexOfTicketAnnule = annuleTicktesArr.findIndex(tickt => tickt.tripId === IdentifiDuTrajet);
+
+        voyagesDisponible.availableSeats -= 1;
+        ticket.passengerName = nomDePassage;
+        ticket.tripId = IdentifiDuTrajet;
+
+        if (indexOfTicketAnnule !== -1) {
+            ticket.seatNumber = annuleTicktesArr[indexOfTicketAnnule].seatNumber
+            annuleTicktesArr.splice(indexOfTicketAnnule, 1)
+        } else {
+            ticket.seatNumber = 50 - voyagesDisponible.availableSeats
+        }
+
+        ticket.price = voyagesDisponible.price
+        tickets.push(ticket);
+
+        console.log(`Ticket acheté avec succès.      
+Ticket #${ticket.id} 
+Passager : ${ticket.passengerName} 
+Trajet : ${voyagesDisponible.departure} → ${voyagesDisponible.destination} 
+Place : ${ticket.seatNumber} 
+Prix : ${ticket.price} DH`)
     }
 }
 function afficherLesTicket() {
@@ -92,7 +100,12 @@ function annulerUnTicket() {
     const ticketAnnule = tickets.find(ticket => ticket.id === ticketId);
     if (ticketAnnule) {
         const indexTicket = tickets.findIndex(ticket => ticket.id === ticketId);
-        const trajetDeTicketAnnule = trips.find(trip => trip.id === ticketAnnule.tripId)
+        const ticketAnnule = tickets.find(ticket =>
+            ticket.id === ticketId
+        );
+        annuleTicktesArr.push(ticketAnnule);
+        console.log(annuleTicktesArr);             ///mse7ha
+        const trajetDeTicketAnnule = trips.find(trip => trip.id === ticketAnnule.tripId);
         trajetDeTicketAnnule.availableSeats += 1;
         tickets.splice(indexTicket, 1);
         console.log("Ticket annulé avec succès. ")
@@ -116,7 +129,7 @@ Place : ${ticket.seatNumber}
 Prix : ${ticket.price} DH`)
         })
     } else {
-        console.log(`                            \"Le nom que vous avez saisi ne correspond à aucun billet.\" `)
+        console.log(`\"Le nom que vous avez saisi ne correspond à aucun billet.\"`)
     }
 
 }
