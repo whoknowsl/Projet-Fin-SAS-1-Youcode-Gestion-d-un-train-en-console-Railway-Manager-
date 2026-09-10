@@ -24,7 +24,7 @@ export const trips = [
         departureTime: "09:00",
         arrivalTime: "13:00",
         price: 140,
-        availableSeats: 50
+        availableSeats: 48
     },
     {
         id: 4,
@@ -42,7 +42,7 @@ export const trips = [
         departureTime: "10:00",
         arrivalTime: "13:30",
         price: 110,
-        availableSeats: 50
+        availableSeats: 49
     },
     {
         id: 6,
@@ -181,4 +181,4 @@ export const trips = [
     }
 ];
 export const tickets = [{ id: 1, passengerName: "Ahmed", tripId: 3, seatNumber: 1, price: 90 }, { id: 2, passengerName: "Sarah", tripId: 3, seatNumber: 2, price: 90 }, { id: 3, passengerName: "Youssef", tripId: 5, seatNumber: 14, price: 120 }];
-export const annuleTicktesArr = []; 
+export const annuleTicktesArr = [];
