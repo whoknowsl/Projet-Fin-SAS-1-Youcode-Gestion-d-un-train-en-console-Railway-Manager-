@@ -134,7 +134,7 @@ Prix : ${ticket.price} DH`)
     }
 
 }
-function filterLesTrajects() {
+function filterLesTrajectsParVilleDeparte() {
     const villeDeDepart = prompt("Ville de départ : ").toLocaleLowerCase();
     const filterdArrByDepart = trips.filter(trip => {
         return trip.departure.toLocaleLowerCase() === villeDeDepart
@@ -201,4 +201,4 @@ function statistiques() {
     laSommeDeTrajetLePlusVendu();
 
 }
-export { menuPrincipla, afficherLesTicket, acheteUnTicket, annulerUnTicket, rechercherUnTicket, filterLesTrajects, trierLesTrajets, nombreTotalDeTicketsVendus, laSommeDeTrajetLePlusVendu, laSommeDesPrixDesTickets, afficherLesTrajets, statistiques }
+export { menuPrincipla, afficherLesTicket, acheteUnTicket, annulerUnTicket, rechercherUnTicket, filterLesTrajectsParVilleDeparte, trierLesTrajets, nombreTotalDeTicketsVendus, laSommeDeTrajetLePlusVendu, laSommeDesPrixDesTickets, afficherLesTrajets, statistiques }

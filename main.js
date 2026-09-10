@@ -1,11 +1,10 @@
-import { menuPrincipla, afficherLesTicket, acheteUnTicket, annulerUnTicket, rechercherUnTicket, filterLesTrajects, trierLesTrajets, afficherLesTrajets, statistiques } from "./function.js"
+import { menuPrincipla, afficherLesTicket, acheteUnTicket, annulerUnTicket, rechercherUnTicket, filterLesTrajectsParVilleDeparte, trierLesTrajets, afficherLesTrajets, statistiques } from "./function.js"
 import createPrompt from "prompt-sync";
 const prompt = createPrompt();
 let runningProgramme = true
 while (runningProgramme) {
     menuPrincipla();
-    const choix = Number(prompt(`Votre choix : 
-        `));
+    const choix = Number(prompt(`Votre choix : `));
     switch (choix) {
         case 1:
             afficherLesTrajets();
@@ -23,7 +22,7 @@ while (runningProgramme) {
             rechercherUnTicket();
             break;
         case 6:
-            filterLesTrajects();
+            filterLesTrajectsParVilleDeparte();
             break;
         case 7:
             trierLesTrajets();
