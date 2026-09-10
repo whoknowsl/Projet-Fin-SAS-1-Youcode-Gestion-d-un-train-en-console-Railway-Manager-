@@ -165,31 +165,21 @@ Calculer la somme des prix des tickets.
 Chiffre d'affaires total : ${total} DH`)
 }
 function laSommeDeTrajetLePlusVendu() {
-    let highestCount = 0;
-    let map = {};
-    tickets.forEach(ticket => {
-        if (ticket.tripId in map) {
-            map[ticket.tripId] += 1
-        } else {
-            map[ticket.tripId] = 1
-        }
-    });
-
-    for (const tripId in map) {
-        if (map[tripId] > highestCount) {
-            highestCount = Number(map[tripId]);
+    let lowestNumOfSeat = trips[0].availableSeats
+    let highestDestinsation = trips[0];
+    for (let trip = 0; trip < trips.length; trip++) {
+        if (trips[trip].availableSeats < lowestNumOfSeat) {
+            highestDestinsation = trips[trip];
         }
     }
-    const trip = trips.find(trip => trip.id === highestCount);
     console.log(`Trajet le plus vendu : 
-        
-${trip.departure} → ${trip.destination} 
-${highestCount} tickets vendus `)
+${highestDestinsation.departure} → ${highestDestinsation.destination} 
+${50 - highestDestinsation.availableSeats} tickets vendus`);
 
 }
 function statistiques() {
     nombreTotalDeTicketsVendus();
-    laSommeDeTrajetLePlusVendu();
+    laSommeDesPrixDesTickets();
     laSommeDeTrajetLePlusVendu();
 
 }

@@ -6,7 +6,7 @@ export const trips = [
         departureTime: "07:30",
         arrivalTime: "08:30",
         price: 25,
-        availableSeats: 50
+        availableSeats: 10
     },
     {
         id: 2,
