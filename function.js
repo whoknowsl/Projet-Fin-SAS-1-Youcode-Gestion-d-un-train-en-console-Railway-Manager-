@@ -100,14 +100,16 @@ Prix : ${ticket.price} DH
 }
 function annulerUnTicket() {
     const ticketId = Number(prompt("Identifiant du ticket : "));
+    const indexTicket = tickets.findIndex(ticket => ticket.id === ticketId);
+    const ticketAnnule = tickets.find(ticket =>
+        ticket.id === ticketId
+    );
     if (ticketAnnule) {
-        const indexTicket = tickets.findIndex(ticket => ticket.id === ticketId);
-        const ticketAnnule = tickets.find(ticket =>
-            ticket.id === ticketId
-        );
         annuleTicktesArr.push(ticketAnnule);
         const trajetDeTicketAnnule = trips.find(trip => trip.id === ticketAnnule.tripId);
-        trajetDeTicketAnnule.availableSeats += 1;
+        if (trajetDeTicketAnnule) {
+            trajetDeTicketAnnule.availableSeats += 1;
+        }
         tickets.splice(indexTicket, 1);
         console.log("Ticket annulé avec succès. ")
     } else {
