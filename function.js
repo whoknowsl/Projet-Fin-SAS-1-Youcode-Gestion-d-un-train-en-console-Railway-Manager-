@@ -121,19 +121,23 @@ function rechercherUnTicket() {
     const nomRecherche = prompt("Nom du passager : ").toLocaleLowerCase();
     console.log(`// Le programme affiche tous les tickets appartenant à ${nomRecherche}.`)
     const filtredTickets = tickets.filter(ticket => {
-        return ticket.passengerName === nomRecherche
+        return ticket.passengerName.toLocaleLowerCase() === nomRecherche
     })
-    if (filtredTickets.length !== 0) {
-        filtredTickets.forEach(ticket => {
-            console.log(`Ticket #${ticket.id} 
-Passager : ${ticket.passengerName}
-Trajet : ${ticket.departure} → ${ticket.destination} 
-Place : ${ticket.seatNumber} 
-Prix : ${ticket.price} DH`)
-        })
-    } else {
-        console.log(`\"Le nom que vous avez saisi ne correspond à aucun billet.\"`)
-    }
+    filtredTickets.forEach(ticket => {
+        const voyagesDisponible = trips.find(trip => trip.id === ticket.tripId
+        )
+        if (filtredTickets.length !== 0) {
+            filtredTickets.forEach(ticket => {
+                console.log(`Ticket #${ticket.id} 
+    Passager : ${ticket.passengerName}
+    Trajet : ${voyagesDisponible.departure} → ${voyagesDisponible.destination} 
+    Place : ${ticket.seatNumber} 
+    Prix : ${ticket.price} DH`)
+            })
+        } else {
+            console.log(`\"Le nom que vous avez saisi ne correspond à aucun billet.\"`)
+        }
+    })
 
 }
 function filterLesTrajectsParVilleDeparte() {
